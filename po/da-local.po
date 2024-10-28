@@ -1,0 +1,101 @@
+# Danish translation for Gramps
+# This file is distributed under the same license as the Gramps package.
+# Dansk oversættelse til GRAMPS
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Lars Kr. Lundin <gramps@lklundin.dk>, 2002.
+# Morten Bo Johansen <mbj@spamcop.net>, 2006-, >= Gramps 0.7.3
+# *** Vedr. ordstilling: ***
+# Ofte vil det lyde mere naturligt at ændre en ordstilling ved at
+# bytte om på hoved- og ledsætning, som f.eks.
+# Kaj Mikkelsen <kmi@vgdata.dk>, 2016, 2017, 2018.
+# Allan Nordhøy <epost@anotheragency.no>, 2021.
+# Kaj Arne Mikkelsen <kmi@vgdata.dk>, 2021, 2023, 2024.
+# Jørn Hansen <joernh@gmail.com>, 2023.
+#
+# "Før reparationen udføres, forvis dig om at databasen virkelig
+# "ikke længere kan åbnes"
+# til
+#
+# "forvis dig om at databasen virkelig ikke kan åbnes før du
+# "udfører reparationen."
+#
+# Jeg har dog i mange tilfælde valgt at bevare den oprindelige
+# ordstilling, da der ligger en opmærksomhedsskabende værdi i denne. Her
+# bliver man f.eks. som det første i sætningen gjort opmærksom på at man
+# IKKE skal udføre reparationen FØR .. -MBJ
+# *** Oversættelser af visse ord/vendinger: ***
+# LDS: SDH (Latter Day Saints -> Sidste Dages Hellige)
+# home person: proband
+# ancestor: ane
+# given name: fornavn
+# preferences: indstillinger
+# link: forbindelse
+# family tree: slægtsbog (men se nedenfor)
+# First Communion: Førstekommunion
+# probate: skifte
+# record: optegnelse
+#
+# Anvendt af Lars Kr. Lundin:
+# citation: citering (fremfor f.eks. 'kildehenvisning')
+# citering er i 2016 blevet ændret til kildehenvisning af Kaj Mikkelsen
+# database: database (fremfor det tidligere 'slægtsbog')
+# matches: matcher (fremfor det tidligere 'passer med')
+# locale: landestandard (i mangel af bedre)
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-26 09:57+0200\n"
+"PO-Revision-Date: 2024-04-18 08:33+0000\n"
+"Last-Translator: Kaj Arne Mikkelsen <kmi@vgdata.dk>\n"
+"Language-Team: Danish <https://hosted.weblate.org/projects/gramps-project/"
+"gramps/da/>\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.5-dev\n"
+"Generated-By: pygettext.py 1.4\n"
+
+#: HistTime/HistTimeLine.gpr.py:3 HistTime/HistTimeLine.gpr.py:13
+msgid "Historical Timeline"
+msgstr "Historisk Tidslinie"
+
+#: HistTime/HistTimeLine.gpr.py:4
+msgid "Displaying a historical timeline"
+msgstr "Viser en historisk tidslinie"
+
+#: HistTime/HistTimeLine.py:82
+msgid "Filter string "
+msgstr "Filter streng "
+
+#: HistTime/HistTimeLine.py:201
+msgid "Cannot open URL: "
+msgstr "Kan ikke åbne URL: "
+
+#: HistTime/HistTimeLine.py:202
+msgid "Error:"
+msgstr "Fejl:"
+
+#: HistTime/HistTimeLine.py:211
+msgid "Double click row to follow link"
+msgstr "Dobbeltklik for at følge linket"
+
+#: HistTime/HistTimeLine.py:219
+msgid "From"
+msgstr "Fra"
+
+#: HistTime/HistTimeLine.py:228
+msgid "To"
+msgstr "Til"
+
+#: HistTime/HistTimeLine.py:233
+msgid "Text"
+msgstr "Tekst"
+
+#: HistTime/HistTimeLine.py:238
+msgid "Link"
+msgstr "Link"
