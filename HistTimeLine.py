@@ -1,7 +1,7 @@
 #
 # Gramps - a GTK+/GNOME based genealogy program
 #
-# Copyright (C) 2016-2018 Sam Manzi
+# Copyright (C) 2024 Kaj Mikkelsen <kmi@vgdata.dk>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
