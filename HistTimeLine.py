@@ -51,7 +51,6 @@ from gi.repository import Gtk
 local_log = logging.getLogger('HistTimeLine')
 local_log.setLevel(logging.WARNING)
 
-
 try:
     _trans = glocale.get_addon_translator(__file__)
 except ValueError:
@@ -162,23 +161,33 @@ class HistoricalTimeLineGramplet(Gramplet):
         local_log.info('testing string %s ',self.__start_filter_st)
         local_log.info('testing boolean %r ',self.__use_filter)
         self.model.clear()
-        flnm = os.path.join(os.path.dirname(__file__), lang+'_data.txt')
+        linenbr = 0
+        flnm = os.path.join(os.path.dirname(__file__), lang+'_data_v1_0.txt')
+        if not os.path.exists(flnm):
+            flnm =  os.path.join(os.path.dirname(__file__), 'default'+'_data_v1_0.txt')
+
         if os.path.exists(flnm):
             if os.path.isfile(flnm):
                 with open(flnm,encoding='utf-8') as myfile:
                     for line in myfile:
+                        linenbr += 1
                         line = line.rstrip()+';'
                         words = line.split(';')
-                        words[2] = words[2].replace('"','')
-                        if (int(words[0]) >= int(birthyear)) and (int(words[0]) <= int(deathyear)):
-                            mytupple = (words[0],words[1],words[2],words[3],'#000000','#ffffff')
+                        if len(words) != 5:
+                            errormessage = _(': not four semicolons in : "')+line+'i" File: '+flnm
+                            errormessage = str(linenbr)+errormessage
+                            ErrorDialog(_('Error:'),errormessage)
                         else:
-                            mytupple = (words[0],words[1],words[2],words[3],'#000000','#ededed')
-                        if  self.__use_filter:
-                            if not words[2].startswith(self.__start_filter_st):
+                            words[2] = words[2].replace('"','')
+                            if (int(words[0]) >= int(birthyear)) and (int(words[0]) <= int(deathyear)):
+                                mytupple = (words[0],words[1],words[2],words[3],'#000000','#ffffff')
+                            else:
+                                mytupple = (words[0],words[1],words[2],words[3],'#000000','#ededed')
+                            if  self.__use_filter:
+                                if not words[2].startswith(self.__start_filter_st):
+                                    self.model.append(mytupple)
+                            else:
                                 self.model.append(mytupple)
-                        else:
-                            self.model.append(mytupple)
             else:
                 self.set_text('No file '+flnm)
         else:
