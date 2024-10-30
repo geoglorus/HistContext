@@ -49,7 +49,7 @@ from gi.repository import Gtk
 #------------------------------------------------------------------------
 
 local_log = logging.getLogger('HistTimeLine')
-local_log.setLevel(logging.WARNING)
+local_log.setLevel(logging.INFO)
 
 try:
     _trans = glocale.get_addon_translator(__file__)
@@ -153,46 +153,56 @@ class HistoricalTimeLineGramplet(Gramplet):
         if (deathyear > 0) and (birthyear == 0):
             birthyear = deathyear - 100
         return birthyear, deathyear
+    
+    def load_file(self,flnm):
+        local_log.info('FILENANME %s',flnm);
+        birthyear,deathyear = self.get_birth_year()
+        linenbr = 0
+        with open(flnm,encoding='utf-8') as myfile:
+            for line in myfile:
+                linenbr += 1
+                line = line.rstrip()+';'
+                words = line.split(';')
+                if len(words) != 5:
+                    errormessage = _(': not four semicolons in : "')+line+'i" File: '+flnm
+                    errormessage = str(linenbr)+errormessage
+                    ErrorDialog(_('Error:'),errormessage)
+                else:
+                    words[2] = words[2].replace('"','')
+                    if (int(words[0]) >= int(birthyear)) and (int(words[0]) <= int(deathyear)):
+                        mytupple = (words[0],words[1],words[2],words[3],'#000000','#ffffff')
+                    else:
+                        mytupple = (words[0],words[1],words[2],words[3],'#000000','#ededed')
+                    if  self.__use_filter:
+                        if not words[2].startswith(self.__start_filter_st):
+                            local_log.info('appending %s',words[2])
+                            self.model.append(mytupple)
+                    else:
+                        local_log.info('appending %s',words[2])
+                        self.model.append(mytupple)
+
 
 
     def main(self):
-        birthyear,deathyear = self.get_birth_year()
-        local_log.info('lifespan %s - %s ',birthyear,deathyear)
         local_log.info('testing string %s ',self.__start_filter_st)
         local_log.info('testing boolean %r ',self.__use_filter)
         self.model.clear()
-        linenbr = 0
         flnm = os.path.join(os.path.dirname(__file__), lang+'_data_v1_0.txt')
         if not os.path.exists(flnm):
             flnm =  os.path.join(os.path.dirname(__file__), 'default'+'_data_v1_0.txt')
 
         if os.path.exists(flnm):
             if os.path.isfile(flnm):
-                with open(flnm,encoding='utf-8') as myfile:
-                    for line in myfile:
-                        linenbr += 1
-                        line = line.rstrip()+';'
-                        words = line.split(';')
-                        if len(words) != 5:
-                            errormessage = _(': not four semicolons in : "')+line+'i" File: '+flnm
-                            errormessage = str(linenbr)+errormessage
-                            ErrorDialog(_('Error:'),errormessage)
-                        else:
-                            words[2] = words[2].replace('"','')
-                            if (int(words[0]) >= int(birthyear)) and (int(words[0]) <= int(deathyear)):
-                                mytupple = (words[0],words[1],words[2],words[3],'#000000','#ffffff')
-                            else:
-                                mytupple = (words[0],words[1],words[2],words[3],'#000000','#ededed')
-                            if  self.__use_filter:
-                                if not words[2].startswith(self.__start_filter_st):
-                                    self.model.append(mytupple)
-                            else:
-                                self.model.append(mytupple)
+                self.load_file(flnm)
             else:
                 self.set_text('No file '+flnm)
         else:
             self.set_text('No path '+flnm)
-
+        flnm = os.path.join(os.path.dirname(__file__), 'custom_v1_0.txt')
+        if os.path.exists(flnm):
+            if os.path.isfile(flnm):
+                self.load_file(flnm)
+    
     def active_changed(self, handle):
         """
         Called when the active person is changed.
@@ -250,5 +260,6 @@ class HistoricalTimeLineGramplet(Gramplet):
         column.set_sort_column_id(3)
         column.set_fixed_width(150)
         top.append_column(column)
+        self.model.set_sort_column_id(0,Gtk.SortType.ASCENDING)
         top.set_model(self.model)
         return top

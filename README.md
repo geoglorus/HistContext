@@ -14,8 +14,10 @@ example:
 
 1789;1797;George Washington;https://en.wikipedia.org/wiki/George\_Washington
 
-The file name is `<locale>_data.txt `e.g. `da_DK_data.txt` for Denmark
-Currently only two files are provided, `da_DK_data.txt` and `en_US_data.txt` which simply is a list of American presidents.
+The file name is `<locale>_data_v1_0.txt `e.g. `da_DK_data_v1_0.txt` for Denmark
+Currently only four files are provided, `da_DK_data_v1_0.txt` and `en_US_data_v1_0.txt` which simply is a list of American presidents.
+The third is `deafult_data_v1_0.txt`which will be used, if there isn't any data file for your language.
+The fourth file is `custom_v1_0.txt`which can be used for adding your own data, which will be merged into the view.
 
 I have added all the danish census'es to the Danish data file. To avoid looking at this you can go into the settings for the person list, and make a filter. If you check the "use filter" checkbox, the historical list will not display the events starting with the text you have added. In my case the text is "Folketælling"
 
