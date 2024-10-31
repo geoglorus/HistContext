@@ -20,11 +20,11 @@
 
 #----------------------------------------------------------------------------
 """
-    HistTimeLine - a plugin for showing historical events
+    Historical Context - a plugin for showing historical events
     Will show the person in a historical context
     """
 
-# File: HistTimeLine.py
+# File: HistContext.py
 #from gramps.gen.plug import Gramplet
 
 import os
@@ -48,7 +48,7 @@ from gi.repository import Gtk
 #
 #------------------------------------------------------------------------
 
-local_log = logging.getLogger('HistTimeLine')
+local_log = logging.getLogger('HistContext')
 local_log.setLevel(logging.INFO)
 
 try:
@@ -60,7 +60,7 @@ lang = glocale.lang
 local_log.info('Sprog = %s',lang)
 
 
-class HistoricalTimeLineGramplet(Gramplet):
+class HistContext(Gramplet):
     """ 
     class for showing a timeline 
     """
@@ -266,10 +266,10 @@ class HistoricalTimeLineGramplet(Gramplet):
         column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
         top.append_column(column)
 
-        column = Gtk.TreeViewColumn(_('Link'), renderer, text=3,foreground=4,background=5)
-        column.set_sort_column_id(3)
-        column.set_fixed_width(150)
-        top.append_column(column)
+#        column = Gtk.TreeViewColumn(_('Link'), renderer, text=3,foreground=4,background=5)
+#        column.set_sort_column_id(3)
+#        column.set_fixed_width(150)
+#        top.append_column(column)
         self.model.set_sort_column_id(0,Gtk.SortType.ASCENDING)
         top.set_model(self.model)
         return top
