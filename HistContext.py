@@ -83,8 +83,11 @@ class HistoricalTimeLineGramplet(Gramplet):
         name = _("Filter string ")
         opt = StringOption(name, self.__start_filter_st)
         self.opts.append(opt)
-        name = ("Use filter ")
+        name = _("Use filter ")
         opt = BooleanOption(name,self.__use_filter)
+        self.opts.append(opt)
+        name =_("Hide outside life span ")
+        opt = BooleanOption(name,self.__hide_it)
         self.opts.append(opt)
         if self.dbstate.db.is_open():
             for tag_handle in self.dbstate.db.get_tag_handles(sort_handles=True):
@@ -98,6 +101,7 @@ class HistoricalTimeLineGramplet(Gramplet):
         """
         self.__start_filter_st = self.opts[0].get_value()
         self.__use_filter = self.opts[1].get_value()
+        self.__hide_it = self.opts[2].get_value()
 
     def save_update_options(self, obj):
         """
@@ -107,6 +111,7 @@ class HistoricalTimeLineGramplet(Gramplet):
         self.gui.data = [
             self.__start_filter_st,
             self.__use_filter,
+            self.__hide_it,
         ]
         self.update()
 
@@ -115,12 +120,14 @@ class HistoricalTimeLineGramplet(Gramplet):
         Load stored configuration data.
         """
         local_log.info('Antal = %d',len(self.gui.data))
-        if len(self.gui.data) == 2:
+        if len(self.gui.data) == 3:
             self.__start_filter_st = self.gui.data[0]
             self.__use_filter = (self.gui.data[1] == 'True')
+            self.__hide_it = (self.gui.data[2] == 'True')
         else:
-            self.__start_filter_st = "Kaj"
+            self.__start_filter_st = "Census"
             self.__use_filter = True
+            self.__hide_it = True
         local_log.info('stored value = %r',self.__use_filter)
 
 
@@ -171,15 +178,18 @@ class HistoricalTimeLineGramplet(Gramplet):
                     words[2] = words[2].replace('"','')
                     if (int(words[0]) >= int(birthyear)) and (int(words[0]) <= int(deathyear)):
                         mytupple = (words[0],words[1],words[2],words[3],'#000000','#ffffff')
+                        hide_this = False
                     else:
+                        hide_this = self.__hide_it
                         mytupple = (words[0],words[1],words[2],words[3],'#000000','#ededed')
-                    if  self.__use_filter:
-                        if not words[2].startswith(self.__start_filter_st):
+                    if not hide_this:
+                        if  self.__use_filter:
+                            if not words[2].startswith(self.__start_filter_st):
+                                local_log.info('appending %s',words[2])
+                                self.model.append(mytupple)
+                        else:
                             local_log.info('appending %s',words[2])
                             self.model.append(mytupple)
-                    else:
-                        local_log.info('appending %s',words[2])
-                        self.model.append(mytupple)
 
 
 
