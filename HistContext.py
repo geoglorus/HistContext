@@ -30,12 +30,13 @@
 import os
 import logging
 import gi
+import glob
 from gramps.gen.plug import Gramplet
 from gramps.gen.const import GRAMPS_LOCALE as glocale
 from gramps.gen.utils.db import (get_birth_or_fallback, get_death_or_fallback)
 from gramps.gui.display import display_url
 from gramps.gui.dialog import ErrorDialog
-from gramps.gen.plug.menu import BooleanOption,StringOption
+from gramps.gen.plug.menu import EnumeratedListOption,BooleanOption,StringOption
 
 
 from gi.repository import  Pango
@@ -77,6 +78,7 @@ class HistContext(Gramplet):
         """
         Build the configuration options.
         """
+        files = []
 
         self.opts = []
 
@@ -88,6 +90,13 @@ class HistContext(Gramplet):
         self.opts.append(opt)
         name =_("Hide outside life span ")
         opt = BooleanOption(name,self.__hide_it)
+        self.opts.append(opt)
+        name = _("Files")
+        flnam = os.path.join(os.path.dirname(__file__), '*.txt')
+        files = [f for f in glob.glob(flnam)]
+        opt = EnumeratedListOption(name,self.__selFile)
+        for filnm in files:
+            opt.add_item(filnm,os.path.basename(filnm))
         self.opts.append(opt)
         if self.dbstate.db.is_open():
             for tag_handle in self.dbstate.db.get_tag_handles(sort_handles=True):
@@ -102,6 +111,8 @@ class HistContext(Gramplet):
         self.__start_filter_st = self.opts[0].get_value()
         self.__use_filter = self.opts[1].get_value()
         self.__hide_it = self.opts[2].get_value()
+        self.__selFile = self.opts[3].get_value()
+        local_log.info('1 stored Filename = %s',self.__selFile)
 
     def save_update_options(self, obj):
         """
@@ -112,7 +123,9 @@ class HistContext(Gramplet):
             self.__start_filter_st,
             self.__use_filter,
             self.__hide_it,
+            self.__selFile,
         ]
+        local_log.info('3 stored Filename = %s',self.__selFile)
         self.update()
 
     def on_load(self):
@@ -120,15 +133,17 @@ class HistContext(Gramplet):
         Load stored configuration data.
         """
         local_log.info('Antal = %d',len(self.gui.data))
-        if len(self.gui.data) == 3:
+        if len(self.gui.data) == 4:
             self.__start_filter_st = self.gui.data[0]
             self.__use_filter = (self.gui.data[1] == 'True')
             self.__hide_it = (self.gui.data[2] == 'True')
+            self.__selFile = self.gui.data[3]
         else:
             self.__start_filter_st = "Census"
             self.__use_filter = True
             self.__hide_it = True
-        local_log.info('stored value = %r',self.__use_filter)
+            self.__selFile = os.path.join(os.path.dirname(__file__),'default_data_v1_0.txt')
+        local_log.info('2 stored Filename = %s',self.__selFile)
 
 
     def get_birth_year(self):
@@ -197,7 +212,7 @@ class HistContext(Gramplet):
         local_log.info('testing string %s ',self.__start_filter_st)
         local_log.info('testing boolean %r ',self.__use_filter)
         self.model.clear()
-        flnm = os.path.join(os.path.dirname(__file__), lang+'_data_v1_0.txt')
+        flnm = self.__selFile
         if not os.path.exists(flnm):
             flnm =  os.path.join(os.path.dirname(__file__), 'default'+'_data_v1_0.txt')
 
@@ -208,10 +223,11 @@ class HistContext(Gramplet):
                 self.set_text('No file '+flnm)
         else:
             self.set_text('No path '+flnm)
-        flnm = os.path.join(os.path.dirname(__file__), 'custom_v1_0.txt')
-        if os.path.exists(flnm):
-            if os.path.isfile(flnm):
-                self.load_file(flnm)
+        def_flnm = os.path.join(os.path.dirname(__file__), 'custom_v1_0.txt')
+        if flnm != def_flnm:
+            if os.path.exists(def_flnm):
+                if os.path.isfile(def_flnm):
+                    self.load_file(def_flnm)
     
     def active_changed(self, handle):
         """
