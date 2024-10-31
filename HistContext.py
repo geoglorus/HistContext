@@ -191,7 +191,13 @@ class HistContext(Gramplet):
                     ErrorDialog(_('Error:'),errormessage)
                 else:
                     words[2] = words[2].replace('"','')
-                    if (int(words[0]) >= int(birthyear)) and (int(words[0]) <= int(deathyear)):
+                    if words[1] == '':
+                        end_year = words[0]
+                    else:
+                        end_year = words[1]
+
+                    if ((int(words[0]) >= int(birthyear)) and (int(words[0]) <= int(deathyear))) or \
+                     ((int(end_year) >= int(birthyear)) and (int(end_year) <= int(deathyear))):
                         mytupple = (words[0],words[1],words[2],words[3],'#000000','#ffffff')
                         hide_this = False
                     else:
