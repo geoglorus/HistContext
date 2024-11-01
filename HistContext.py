@@ -186,9 +186,10 @@ class HistContext(Gramplet):
                 line = line.rstrip()+';'
                 words = line.split(';')
                 if len(words) != 5:
-                    errormessage = _(': not four semicolons in : "')+line+'i" File: '+flnm
-                    errormessage = str(linenbr)+errormessage
-                    ErrorDialog(_('Error:'),errormessage)
+                    if len(line) > 10:
+                        errormessage = _(': not four semicolons in : "')+line+'i" File: '+flnm
+                        errormessage = str(linenbr)+errormessage
+                        ErrorDialog(_('Error:'),errormessage)
                 else:
                     words[2] = words[2].replace('"','')
                     if words[1] == '':

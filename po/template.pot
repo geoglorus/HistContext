@@ -8,51 +8,63 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-26 09:57+0200\n"
+"POT-Creation-Date: 2024-10-31 12:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: HistTime/HistTimeLine.gpr.py:3 HistTime/HistTimeLine.gpr.py:13
-msgid "Historical Timeline"
+#: HistContext.gpr.py:3 HistContext.gpr.py:13
+msgid "Historical Context"
 msgstr ""
 
-#: HistTime/HistTimeLine.gpr.py:4
-msgid "Displaying a historical timeline"
+#: HistContext.gpr.py:4
+msgid "Displaying a historical context"
 msgstr ""
 
-#: HistTime/HistTimeLine.py:82
+#: HistContext.py:85
 msgid "Filter string "
 msgstr ""
 
-#: HistTime/HistTimeLine.py:201
-msgid "Cannot open URL: "
+#: HistContext.py:88
+msgid "Use filter "
 msgstr ""
 
-#: HistTime/HistTimeLine.py:202
+#: HistContext.py:91
+msgid "Hide outside life span "
+msgstr ""
+
+#: HistContext.py:94
+msgid "Files"
+msgstr ""
+
+#: HistContext.py:189
+msgid ": not four semicolons in : \""
+msgstr ""
+
+#: HistContext.py:191 HistContext.py:255
 msgid "Error:"
 msgstr ""
 
-#: HistTime/HistTimeLine.py:211
+#: HistContext.py:254
+msgid "Cannot open URL: "
+msgstr ""
+
+#: HistContext.py:264
 msgid "Double click row to follow link"
 msgstr ""
 
-#: HistTime/HistTimeLine.py:219
+#: HistContext.py:272
 msgid "From"
 msgstr ""
 
-#: HistTime/HistTimeLine.py:228
+#: HistContext.py:281
 msgid "To"
 msgstr ""
 
-#: HistTime/HistTimeLine.py:233
+#: HistContext.py:286
 msgid "Text"
-msgstr ""
-
-#: HistTime/HistTimeLine.py:238
-msgid "Link"
 msgstr ""
