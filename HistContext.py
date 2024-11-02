@@ -50,7 +50,7 @@ from gi.repository import Gtk
 #------------------------------------------------------------------------
 
 local_log = logging.getLogger('HistContext')
-local_log.setLevel(logging.INFO)
+local_log.setLevel(logging.WARNING)
 
 try:
     _trans = glocale.get_addon_translator(__file__)
