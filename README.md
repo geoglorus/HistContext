@@ -1,6 +1,6 @@
 ### Histtory Context gramplet
 
-![](/home/kmi/Nextcloud/app/python/HistContext/gramplet.png) 
+![](./gramplet.png) 
 Gramplet to display historical events with the year they happened, and optionally the year  they ended.
 
 A double-click on a row will open your browser at the provided Link
@@ -30,9 +30,9 @@ The fourth file is `custom_v1_0.txt`which can be used for adding your own data, 
 
 The options can be accessed by the settings for the view:
 
-![Options](/home/kmi/Nextcloud/app/python/HistContext/options1.png  "Options")
+![Options](./options1.png  "Options")
 
-![Options](/home/kmi/Nextcloud/app/python/HistContext/options.png  "Options")
+![Options](./options.png  "Options")
 
 1 This string can be used to filter out text. If you set this to "Cen" all lines where the tect starts with "Cen" will be filtered out (e.g.Census as well as "Century"
 
