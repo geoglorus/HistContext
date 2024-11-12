@@ -49,7 +49,7 @@ from gi.repository import Gtk
 #------------------------------------------------------------------------
 
 local_log = logging.getLogger('HistContext')
-local_log.setLevel(logging.INFO)
+local_log.setLevel(logging.WARNING)
 
 try:
     _trans = glocale.get_addon_translator(__file__)
@@ -152,26 +152,6 @@ class HistContext(Gramplet):
         Save a gramplet's options to file.
         """
         self.save_options()
-        self.gui.data = [
-            self.__start_filter_st,
-            self.__use_filter,
-            self.__hide_it,
-            self.__sel_file,
-            self.__fg_sel,
-            self.__bg_sel,
-            self.__fg_not_sel,
-            self.__bg_not_sel,
-
-        ]
-        config.set("myopt.filter_text",self.__start_filter_st)
-        config.set("myopt.use_filter",self.__use_filter)
-        config.set("myopt.hide_outside_span",self.__hide_it)
-        config.set("myopt.files",self.__sel_file)
-        config.set("myopt.fg_sel_col",self.__fg_sel)
-        config.set("myopt.bg_sel_col",self.__bg_sel)
-        config.set("myopt.fg_usel_col",self.__fg_not_sel)
-        config.set("myopt.bg_usel_col",self.__bg_not_sel)
-        config.save()
         local_log.info('3 stored Filename = %s',self.__sel_file)
         self.update()
 
@@ -180,15 +160,6 @@ class HistContext(Gramplet):
         Load stored configuration data.
         """
         local_log.info('Antal = %d',len(self.gui.data))
-#        if len(self.gui.data) == 8:
-#            self.__start_filter_st = self.gui.data[0]
-#            self.__use_filter = (self.gui.data[1] == 'True')
-#            self.__hide_it = (self.gui.data[2] == 'True')
-#            self.__sel_file = self.gui.data[3]
-#            self.__fg_sel = self.gui.data[4]
-#            self.__bg_sel = self.gui.data[5]
-#            self.__fg_not_sel = self.gui.data[6]
-#            self.__bg_not_sel = self.gui.data[7]
         self.__start_filter_st = config.get("myopt.filter_text")
         self.__use_filter =  config.get("myopt.use_filter")
         self.__hide_it =  config.get("myopt.hide_outside_span")
@@ -197,16 +168,6 @@ class HistContext(Gramplet):
         self.__bg_sel = config.get("myopt.bg_sel_col")
         self.__fg_not_sel = config.get("myopt.fg_usel_col")
         self.__bg_not_sel = config.get("myopt.bg_usel_col")
-#        else:
-#            self.__start_filter_st = config.get("myopt.filter_text")
-#            self.__start_filter_st = "Census"
-#            self.__use_filter = True
-#            self.__hide_it = True
-#            self.__sel_file = os.path.join(os.path.dirname(__file__),'default_data_v1_0.txt')
-#            self.__fg_sel = '#000000'
-#            self.__bg_sel = '#ffffff'
-#            self.__fg_not_sel = '#000000'
-#            self.__bg_not_sel = '#ededed'
         local_log.info('2 stored Filename = %s',self.__sel_file)
 
 
