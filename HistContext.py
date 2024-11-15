@@ -64,7 +64,7 @@ lang = glocale.lang
 local_log.info("Sprog = %s", lang)
 # local_log.info("Maximum age = %s",_MAX_AGE_PROB_ALIVE);
 config = configman.register_manager("HistContext/HistContext")
-config.register("myopt.filter_text", "String in beginning of text")
+config.register("myopt.filter_text", "Filter out")
 config.register("myopt.use_filter", False)
 config.register("myopt.hide_outside_span", True)
 config.register("myopt.files", "custom_v1_0.txt")
@@ -82,23 +82,27 @@ class HistContext(Gramplet):
     # pylint: disable=too-many-instance-attributes
 
     def init(self):
-        self.model = Gtk.ListStore(str, str, str, str, str)
+        local_log.info('--> dette var init')
+        self.gui.model = Gtk.ListStore(str, str, str, str, str)
         self.gui.WIDGET = self.build_gui()
         self.gui.get_container_widget().remove(self.gui.textview)
         self.gui.get_container_widget().add(self.gui.WIDGET)
         self.gui.WIDGET.show()
         self.model.clear()
+        self.__start_filter_st = config.get("myopt.filter_text")
         config.load()
 
     def build_options(self):
         """
         Build the configuration options.
         """
+
+
         files = []
 
         self.opts = []
 
-        name = _("Filter string ")
+        name = _("Rows starting with this in the text column will be hidden ")
         opt = StringOption(name, self.__start_filter_st)
         self.opts.append(opt)
         name = _("Use filter ")
@@ -136,6 +140,7 @@ class HistContext(Gramplet):
         """
         Save gramplet configuration data.
         """
+        # pylint: disable=attribute-defined-outside-init
         self.__start_filter_st = self.opts[0].get_value()
         self.__use_filter = self.opts[1].get_value()
         self.__hide_it = self.opts[2].get_value()
@@ -307,8 +312,10 @@ class HistContext(Gramplet):
         """
         Build the GUI interface.
         """
+        local_log.info('-->build gui')
         tip = _("Double click row to follow link")
         self.set_tooltip(tip)
+        # pylint: disable=attribute-defined-outside-init
         self.model = Gtk.ListStore(str, str, str, str, str, str)
         top = Gtk.TreeView()
         top.connect("row-activated", self.act)
