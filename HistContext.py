@@ -32,15 +32,23 @@ import logging
 import glob
 import gi
 import gramps.gen.utils.alive as est
-#from gramps.gen.utils.alive import update_constants
+
+# from gramps.gen.utils.alive import update_constants
 from gramps.gen.utils.alive import probably_alive_range
 from gramps.gen.plug import Gramplet
 from gramps.gen.const import GRAMPS_LOCALE as glocale
-#from gramps.gen.utils.db import get_birth_or_fallback, get_death_or_fallback
+
+# from gramps.gen.utils.db import get_birth_or_fallback, get_death_or_fallback
 from gramps.gen.config import config as configman
 from gramps.gui.display import display_url
 from gramps.gui.dialog import ErrorDialog
-from gramps.gen.plug.menu import EnumeratedListOption, BooleanOption, StringOption, BooleanListOption, ColorOption
+from gramps.gen.plug.menu import (
+    EnumeratedListOption,
+    BooleanOption,
+    StringOption,
+    BooleanListOption,
+    ColorOption,
+)
 from gi.repository import Pango
 
 gi.require_version("Gtk", "3.0")
@@ -67,24 +75,23 @@ config = configman.register_manager("HistContext/HistContext")
 config.register("myopt.filter_text", "Filter out")
 config.register("myopt.use_filter", False)
 config.register("myopt.hide_outside_span", True)
-config.register("myopt.files","default_data_v1_0.txt")
+config.register("myopt.files", "default_data_v1_0.txt")
 config.register("myopt.fg_sel_col", "#000000")
 config.register("myopt.bg_sel_col", "#ffffff")
 config.register("myopt.fg_usel_col", "#000000")
 config.register("myopt.bg_usel_col", "#ededed")
-config.register("myopt.fl_ar",['None'])
-
-
+config.register("myopt.fl_ar", ["None"])
 
 
 class HistContext(Gramplet):
     """
     class for showing a timeline
     """
+
     # pylint: disable=too-many-instance-attributes
 
     def init(self):
-        local_log.info('--> dette var init')
+        local_log.info("--> dette var init")
         self.gui.model = Gtk.ListStore(str, str, str, str, str)
         self.gui.WIDGET = self.build_gui()
         self.gui.get_container_widget().remove(self.gui.textview)
@@ -98,12 +105,9 @@ class HistContext(Gramplet):
         Build the configuration options.
         """
 
-
         files = []
-        FileArr = {}
+        #        FileArr = {}
         self.opts = []
-        BolVal = True
-        short_fil_name =  ""
 
         name = _("Rows starting with this in the text column will be hidden ")
         opt = StringOption(name, self.__start_filter_st)
@@ -133,20 +137,17 @@ class HistContext(Gramplet):
         name = _("Background color items outside lifespan")
         opt = ColorOption(name, self.__bg_not_sel)
         self.opts.append(opt)
-        opt = BooleanListOption(_('Select from files'))
+        opt = BooleanListOption(_("Select from files"))
         for filnm in files:
             short_fil_name = os.path.basename(filnm)
-            if short_fil_name in self.__fl_ar:
-                BolVal = True
-            else:
-                BolVal = False
-            opt.add_button(os.path.basename(filnm),BolVal)
-            FileArr.setdefault(os.path.basename(filnm),filnm)
+            bol_val = (short_fil_name in self.__fl_ar)
+            opt.add_button(os.path.basename(filnm), bol_val)
+        #            FileArr.setdefault(os.path.basename(filnm),filnm)
         self.opts.append(opt)
- #       if self.dbstate.db.is_open():            5
-  #          for tag_handle in self.dbstate.db.get_tag_handles(sort_handles=True):
-   #             tag = self.dbstate.db.get_tag_from_handle(tag_handle)
-#                tag_name = tag.get_name()
+        #       if self.dbstate.db.is_open():            5
+        #          for tag_handle in self.dbstate.db.get_tag_handles(sort_handles=True):
+        #             tag = self.dbstate.db.get_tag_from_handle(tag_handle)
+        #                tag_name = tag.get_name()
         list(map(self.add_option, self.opts))
 
     def save_options(self):
@@ -171,7 +172,7 @@ class HistContext(Gramplet):
         config.set("myopt.bg_sel_col", self.__bg_sel)
         config.set("myopt.fg_usel_col", self.__fg_not_sel)
         config.set("myopt.bg_usel_col", self.__bg_not_sel)
-        config.set("myopt.fl_ar",self.__fl_ar)
+        config.set("myopt.fl_ar", self.__fl_ar)
         config.save()
 
     def save_update_options(self, obj):
@@ -196,7 +197,7 @@ class HistContext(Gramplet):
         self.__fg_not_sel = config.get("myopt.fg_usel_col")
         self.__bg_not_sel = config.get("myopt.bg_usel_col")
         self.__fl_ar = config.get("myopt.fl_ar")
-        if self.__fl_ar[0] == 'None':
+        if self.__fl_ar[0] == "None":
             self.__fl_ar[0] = os.path.basename(self.__sel_file)
         local_log.info("2 stored array = %s", self.__fl_ar[0])
 
@@ -288,9 +289,11 @@ class HistContext(Gramplet):
         self.model.clear()
         local_log.info("Main kaldet")
         for flnm in self.__fl_ar:
-            flnm = os.path.join(os.path.dirname(__file__),flnm)
+            flnm = os.path.join(os.path.dirname(__file__), flnm)
             if not os.path.exists(flnm):
-                flnm = os.path.join(os.path.dirname(__file__), "default" + "_data_v1_0.txt")
+                flnm = os.path.join(
+                    os.path.dirname(__file__), "default" + "_data_v1_0.txt"
+                )
             if os.path.exists(flnm):
                 if os.path.isfile(flnm):
                     self.load_file(flnm)
@@ -306,7 +309,7 @@ class HistContext(Gramplet):
         local_log.info("Active changed")
         self.update()
 
-#    def act(self, tree_view, path, column):
+    #    def act(self, tree_view, path, column):
     def act(self, _tree_view, path, _column):
         """
         Called when the user double-click a row
@@ -323,7 +326,7 @@ class HistContext(Gramplet):
         """
         Build the GUI interface.
         """
-        local_log.info('-->build gui')
+        local_log.info("-->build gui")
         tip = _("Double click row to follow link")
         self.set_tooltip(tip)
         # pylint: disable=attribute-defined-outside-init
