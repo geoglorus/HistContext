@@ -40,7 +40,7 @@ from gramps.gen.const import GRAMPS_LOCALE as glocale
 from gramps.gen.config import config as configman
 from gramps.gui.display import display_url
 from gramps.gui.dialog import ErrorDialog
-from gramps.gen.plug.menu import EnumeratedListOption, BooleanOption, StringOption
+from gramps.gen.plug.menu import EnumeratedListOption, BooleanOption, StringOption, BooleanListOption, ColorOption
 from gi.repository import Pango
 
 gi.require_version("Gtk", "3.0")
@@ -67,11 +67,13 @@ config = configman.register_manager("HistContext/HistContext")
 config.register("myopt.filter_text", "Filter out")
 config.register("myopt.use_filter", False)
 config.register("myopt.hide_outside_span", True)
-config.register("myopt.files", "custom_v1_0.txt")
+config.register("myopt.files","default_data_v1_0.txt")
 config.register("myopt.fg_sel_col", "#000000")
 config.register("myopt.bg_sel_col", "#ffffff")
 config.register("myopt.fg_usel_col", "#000000")
 config.register("myopt.bg_usel_col", "#ededed")
+config.register("myopt.fl_ar",['None'])
+
 
 
 
@@ -89,7 +91,6 @@ class HistContext(Gramplet):
         self.gui.get_container_widget().add(self.gui.WIDGET)
         self.gui.WIDGET.show()
         self.model.clear()
-        self.__start_filter_st = config.get("myopt.filter_text")
         config.load()
 
     def build_options(self):
@@ -99,8 +100,10 @@ class HistContext(Gramplet):
 
 
         files = []
-
+        FileArr = {}
         self.opts = []
+        BolVal = True
+        short_fil_name =  ""
 
         name = _("Rows starting with this in the text column will be hidden ")
         opt = StringOption(name, self.__start_filter_st)
@@ -119,18 +122,28 @@ class HistContext(Gramplet):
             opt.add_item(filnm, os.path.basename(filnm))
         self.opts.append(opt)
         name = _("Foreground color items in lifespan")
-        opt = StringOption(name, self.__fg_sel)
+        opt = ColorOption(name, self.__fg_sel)
         self.opts.append(opt)
         name = _("Background color items in lifespan")
-        opt = StringOption(name, self.__bg_sel)
+        opt = ColorOption(name, self.__bg_sel)
         self.opts.append(opt)
         name = _("Foreground color items outside lifespan")
-        opt = StringOption(name, self.__fg_not_sel)
+        opt = ColorOption(name, self.__fg_not_sel)
         self.opts.append(opt)
         name = _("Background color items outside lifespan")
-        opt = StringOption(name, self.__bg_not_sel)
+        opt = ColorOption(name, self.__bg_not_sel)
         self.opts.append(opt)
- #       if self.dbstate.db.is_open():
+        opt = BooleanListOption(_('Select from files'))
+        for filnm in files:
+            short_fil_name = os.path.basename(filnm)
+            if short_fil_name in self.__fl_ar:
+                BolVal = True
+            else:
+                BolVal = False
+            opt.add_button(os.path.basename(filnm),BolVal)
+            FileArr.setdefault(os.path.basename(filnm),filnm)
+        self.opts.append(opt)
+ #       if self.dbstate.db.is_open():            5
   #          for tag_handle in self.dbstate.db.get_tag_handles(sort_handles=True):
    #             tag = self.dbstate.db.get_tag_from_handle(tag_handle)
 #                tag_name = tag.get_name()
@@ -149,7 +162,7 @@ class HistContext(Gramplet):
         self.__bg_sel = self.opts[5].get_value()
         self.__fg_not_sel = self.opts[6].get_value()
         self.__bg_not_sel = self.opts[7].get_value()
-        local_log.info("1 stored Filename = %s", self.__sel_file)
+        self.__fl_ar = self.opts[8].get_selected()
         config.set("myopt.filter_text", self.__start_filter_st)
         config.set("myopt.use_filter", self.__use_filter)
         config.set("myopt.hide_outside_span", self.__hide_it)
@@ -158,6 +171,7 @@ class HistContext(Gramplet):
         config.set("myopt.bg_sel_col", self.__bg_sel)
         config.set("myopt.fg_usel_col", self.__fg_not_sel)
         config.set("myopt.bg_usel_col", self.__bg_not_sel)
+        config.set("myopt.fl_ar",self.__fl_ar)
         config.save()
 
     def save_update_options(self, obj):
@@ -181,7 +195,10 @@ class HistContext(Gramplet):
         self.__bg_sel = config.get("myopt.bg_sel_col")
         self.__fg_not_sel = config.get("myopt.fg_usel_col")
         self.__bg_not_sel = config.get("myopt.bg_usel_col")
-        local_log.info("2 stored Filename = %s", self.__sel_file)
+        self.__fl_ar = config.get("myopt.fl_ar")
+        if self.__fl_ar[0] == 'None':
+            self.__fl_ar[0] = os.path.basename(self.__sel_file)
+        local_log.info("2 stored array = %s", self.__fl_ar[0])
 
     def get_birth_year(self):
         """
@@ -268,25 +285,19 @@ class HistContext(Gramplet):
                             self.model.append(mytupple)
 
     def main(self):
-        local_log.info("testing string %s ", self.__start_filter_st)
-        local_log.info("testing boolean %r ", self.__use_filter)
         self.model.clear()
-        flnm = self.__sel_file
-        if not os.path.exists(flnm):
-            flnm = os.path.join(os.path.dirname(__file__), "default" + "_data_v1_0.txt")
-
-        if os.path.exists(flnm):
-            if os.path.isfile(flnm):
-                self.load_file(flnm)
+        local_log.info("Main kaldet")
+        for flnm in self.__fl_ar:
+            flnm = os.path.join(os.path.dirname(__file__),flnm)
+            if not os.path.exists(flnm):
+                flnm = os.path.join(os.path.dirname(__file__), "default" + "_data_v1_0.txt")
+            if os.path.exists(flnm):
+                if os.path.isfile(flnm):
+                    self.load_file(flnm)
+                else:
+                    self.set_text("No file " + flnm)
             else:
-                self.set_text("No file " + flnm)
-        else:
-            self.set_text("No path " + flnm)
-        def_flnm = os.path.join(os.path.dirname(__file__), "custom_v1_0.txt")
-        if flnm != def_flnm:
-            if os.path.exists(def_flnm):
-                if os.path.isfile(def_flnm):
-                    self.load_file(def_flnm)
+                self.set_text("No path " + flnm)
 
     def active_changed(self, handle):
         """
