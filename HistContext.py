@@ -39,18 +39,19 @@ from gramps.gen.plug import Gramplet
 from gramps.gen.const import GRAMPS_LOCALE as glocale
 from gramps.gen.datehandler import parser
 from gramps.gen.lib.date import Today
+
 # from gramps.gen.utils.db import get_birth_or_fallback, get_death_or_fallback
 from gramps.gen.config import config as configman
 from gramps.gui.display import display_url
 from gramps.gui.dialog import ErrorDialog
 from gramps.gen.plug.menu import (
-    EnumeratedListOption,
     BooleanOption,
     StringOption,
     BooleanListOption,
     ColorOption,
 )
-#from gi.repository import Pango
+
+# from gi.repository import Pango
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
@@ -83,7 +84,7 @@ config.register("myopt.bg_sel_col", "#ffffff")
 config.register("myopt.fg_usel_col", "#000000")
 config.register("myopt.bg_usel_col", "#ededed")
 config.register("myopt.fl_ar", ["None"])
-config.register("myopt.use_year",True)
+config.register("myopt.use_year", True)
 
 
 class HistContext(Gramplet):
@@ -95,7 +96,7 @@ class HistContext(Gramplet):
 
     def init(self):
         local_log.info("--> dette var init")
-        self.gui.model = Gtk.ListStore(str, str, str, str, str)
+        #        self.gui.model = Gtk.ListStore(str, str, str, str, str)
         self.gui.WIDGET = self.build_gui()
         self.gui.get_container_widget().remove(self.gui.textview)
         self.gui.get_container_widget().add(self.gui.WIDGET)
@@ -109,7 +110,6 @@ class HistContext(Gramplet):
         """
 
         files = []
-        #        FileArr = {}
         self.opts = []
 
         name = _("Rows starting with this in the text column will be hidden ")
@@ -141,14 +141,9 @@ class HistContext(Gramplet):
         opt = BooleanListOption(_("Select from files"))
         for filnm in files:
             short_fil_name = os.path.basename(filnm)
-            bol_val = (short_fil_name in self.__fl_ar)
+            bol_val = short_fil_name in self.__fl_ar
             opt.add_button(os.path.basename(filnm), bol_val)
-        #            FileArr.setdefault(os.path.basename(filnm),filnm)
         self.opts.append(opt)
-        #       if self.dbstate.db.is_open():            5
-        #          for tag_handle in self.dbstate.db.get_tag_handles(sort_handles=True):
-        #             tag = self.dbstate.db.get_tag_from_handle(tag_handle)
-        #                tag_name = tag.get_name()
         list(map(self.add_option, self.opts))
 
     def save_options(self):
@@ -200,7 +195,6 @@ class HistContext(Gramplet):
         self.__fl_ar = config.get("myopt.fl_ar")
         if self.__fl_ar[0] == "None":
             self.__fl_ar[0] = os.path.basename(self.__sel_file)
-        local_log.info("2 stored array = %s", self.__fl_ar[0])
 
     def get_birth_year(self):
         """
@@ -220,45 +214,49 @@ class HistContext(Gramplet):
             if self.__use_year:
                 birthyear = date1.to_calendar("gregorian").get_year()
             else:
-                birthyear = str(date1).replace('-','')
+                birthyear = str(date1).replace("-", "")
         if date2:
             if self.__use_year:
                 deathyear = date2.to_calendar("gregorian").get_year()
             else:
-                deathyear = str(date2).replace('-','')
+                deathyear = str(date2).replace("-", "")
         local_log.info("Født: %s", birthyear)
         local_log.info("Død: %s", deathyear)
         return birthyear, deathyear
-    
-    def find_last_day(self,year_month):
-        day =  year_month+'-31'
+
+    def find_last_day(self, year_month):
+        """ "
+        Function wwhich returns the last day of a specific month.
+        """
+        day = year_month + "-31"
         tst_date = parser.parse(day)
         if not tst_date.is_valid():
-            day = year_month+'-30'
+            day = year_month + "-30"
             tst_date = parser.parse(day)
             if not tst_date.is_valid():
-                day = year_month+'-29'
+                day = year_month + "-29"
                 tst_date = parser.parse(day)
                 if not tst_date.is_valid():
-                    day = year_month+'-28'
+                    day = year_month + "-28"
         return day
-    
-    def normalize_date(self, datest,dont_change_valid_dates,start_date):
+
+    def normalize_date(self, datest, dont_change_valid_dates, start_date):
         """
         function that returns a date in the format we want
         displays an error and sets today as day, if datest is not valid
+        also used for returning a date in a sortable fasion
         """
-        if len(datest) == 4 and  not self.__use_year:
+        if len(datest) == 4 and not self.__use_year:
             if start_date:
-                datest = datest+'-01-01'
+                datest = datest + "-01-01"
             else:
-                datest = datest +'-12-31'
-        if len(datest) == 7 and  not self.__use_year:
+                datest = datest + "-12-31"
+        if len(datest) == 7 and not self.__use_year:
             if start_date:
-                datest = datest+'-01'
+                datest = datest + "-01"
             else:
                 datest = self.find_last_day(datest)
-                local_log.info("====> 4 %s ",datest)
+                local_log.info("====> 4 %s ", datest)
         if datest.upper() == "TODAY":
             date1 = Today()
             datest = str(date1)
@@ -266,8 +264,8 @@ class HistContext(Gramplet):
             date1 = parser.parse(datest)
         if not date1.is_valid():
             if self.__show_error:
-                errormessage = (_("Invalid date "+datest))
-                errormessage = errormessage +(_(" in line: "))+str(self.linenbr) 
+                errormessage = _("Invalid date " + datest)
+                errormessage = errormessage + (_(" in line: ")) + str(self.linenbr)
                 ErrorDialog(_("Error:"), errormessage)
             self.__show_error = False
             date1 = Today()
@@ -276,8 +274,6 @@ class HistContext(Gramplet):
             else:
                 datest = str(date1)
 
-#            today_d, today_m, today_y = date1.to_calendar("gregorian").get_dmy()
-#            datest = today_y+'-'+today_m+'-'+today_d
         if self.__use_year:
             new_datest = str(date1.to_calendar("gregorian").get_year())
         else:
@@ -285,12 +281,11 @@ class HistContext(Gramplet):
                 new_datest = datest
             else:
                 new_datest = parser.parse(datest)
-        self.sort_date = str(new_datest).replace("-","")
+        self.sort_date = str(new_datest).replace("-", "")
         if dont_change_valid_dates and not self.__use_year:
             return datest
         else:
             return new_datest
-        
 
     def load_file(self, flnm):
         """
@@ -316,21 +311,21 @@ class HistContext(Gramplet):
                         errormessage = str(self.linenbr) + errormessage
                         ErrorDialog(_("Error:"), errormessage)
                 else:
-                    words[0] = self.normalize_date(words[0],True,True)
+                    words[0] = self.normalize_date(words[0], True, True)
                     local_sort_date = self.sort_date
-                    words[1] = self.normalize_date(words[1],True,False)
+                    words[1] = self.normalize_date(words[1], True, False)
                     if words[1] == "0":
-                      words[1] = ""
+                        words[1] = ""
                     words[2] = words[2].replace('"', "")
-                    begin_year = str(self.normalize_date(words[0],False,True))
+                    begin_year = str(self.normalize_date(words[0], False, True))
                     local_sort_date = self.sort_date
 
                     if words[1] == "":
-                        end_year = str(self.normalize_date(words[0],False,False))  
+                        end_year = str(self.normalize_date(words[0], False, False))
                     else:
-                        end_year = str(self.normalize_date(words[1],False,False))
-                    begin_year = begin_year.replace('-','')
-                    end_year = end_year.replace('-','')
+                        end_year = str(self.normalize_date(words[1], False, False))
+                    begin_year = begin_year.replace("-", "")
+                    end_year = end_year.replace("-", "")
                     if (
                         (int(begin_year) >= int(birthyear))
                         and (int(begin_year) <= int(deathyear))
@@ -390,7 +385,6 @@ class HistContext(Gramplet):
         local_log.info("Active changed")
         self.update()
 
-    #    def act(self, tree_view, path, column):
     def act(self, _tree_view, path, _column):
         """
         Called when the user double-click a row
@@ -411,20 +405,20 @@ class HistContext(Gramplet):
         tip = _("Double click row to follow link")
         self.set_tooltip(tip)
         # pylint: disable=attribute-defined-outside-init
-        self.model = Gtk.ListStore(str, str, str, str, str, str,str)
+        # define array from_date, to_date, Eventsdescription, link to internet, sort_date, foreground_colour, backgroud_colour
+        # Only first three comlumns are visible
+        self.model = Gtk.ListStore(str, str, str, str, str, str, str)
         top = Gtk.TreeView()
         top.connect("row-activated", self.act)
-#        renderer = Gtk.CellRendererText()
-#        renderer.set_property("ellipsize", Pango.EllipsizeMode.END)
         renderer = Gtk.CellRendererText()
 
         column = Gtk.TreeViewColumn(
             _("From"), renderer, text=0, foreground=5, background=6
         )
-#        column.set_expand(False)
-#        column.set_resizable(True)
-#        column.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
-#        column.set_fixed_width(50)
+        #        column.set_expand(False)
+        #        column.set_resizable(True)
+        #        column.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
+        #        column.set_fixed_width(50)
         column.set_sort_column_id(0)
         column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
         top.append_column(column)
@@ -433,7 +427,7 @@ class HistContext(Gramplet):
             _("To"), renderer, text=1, foreground=5, background=6
         )
         column.set_sort_column_id(1)
-#        column.set_fixed_width(50)
+        #        column.set_fixed_width(50)
         column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
 
         top.append_column(column)
@@ -445,12 +439,12 @@ class HistContext(Gramplet):
         column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
         top.append_column(column)
 
-        column = Gtk.TreeViewColumn(
-            _("Dato"), renderer, text=3, foreground=5, background=6
-        )
-#        column.set_sort_column_id(3)
-#        column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
-#        top.append_column(column)
+        # column = Gtk.TreeViewColumn(
+        #    _("Dato"), renderer, text=3, foreground=5, background=6
+        # )
+        #        column.set_sort_column_id(3)
+        #        column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        #        top.append_column(column)
 
         #        column = Gtk.TreeViewColumn(_('Link'), renderer, text=3,foreground=4,background=5)
         #        column.set_sort_column_id(3)

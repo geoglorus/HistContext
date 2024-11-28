@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-15 08:29+0100\n"
+"POT-Creation-Date: 2024-11-28 15:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,62 +25,74 @@ msgstr ""
 msgid "Lists relevant historical events during the lifetime of a Person"
 msgstr ""
 
-#: HistContext.py:105
+#: HistContext.py:115
 msgid "Rows starting with this in the text column will be hidden "
 msgstr ""
 
-#: HistContext.py:108
+#: HistContext.py:118
 msgid "Use filter "
 msgstr ""
 
-#: HistContext.py:111
+#: HistContext.py:121
 msgid "Hide outside life span "
 msgstr ""
 
-#: HistContext.py:114
-msgid "Files"
-msgstr ""
-
-#: HistContext.py:121
-msgid "Foreground color items in lifespan"
-msgstr ""
-
 #: HistContext.py:124
-msgid "Background color items in lifespan"
+msgid "Compare on years"
 msgstr ""
 
 #: HistContext.py:127
-msgid "Foreground color items outside lifespan"
+msgid "Foreground color items in lifespan"
 msgstr ""
 
 #: HistContext.py:130
+msgid "Background color items in lifespan"
+msgstr ""
+
+#: HistContext.py:133
+msgid "Foreground color items outside lifespan"
+msgstr ""
+
+#: HistContext.py:136
 msgid "Background color items outside lifespan"
 msgstr ""
 
-#: HistContext.py:223
-msgid ": not four semicolons in : \""
+#: HistContext.py:141
+msgid "Select from files"
 msgstr ""
 
-#: HistContext.py:229 HistContext.py:309
+#: HistContext.py:267
+msgid "Invalid date "
+msgstr ""
+
+#: HistContext.py:268
+msgid " in line: "
+msgstr ""
+
+#: HistContext.py:269 HistContext.py:312 HistContext.py:398
 msgid "Error:"
 msgstr ""
 
-#: HistContext.py:308
+#: HistContext.py:306
+msgid ": not four semicolons in : \""
+msgstr ""
+
+#: HistContext.py:397
 msgid "Cannot open URL: "
 msgstr ""
 
-#: HistContext.py:316
+#: HistContext.py:405
 msgid "Double click row to follow link"
 msgstr ""
 
-#: HistContext.py:326
+#: HistContext.py:416
 msgid "From"
 msgstr ""
 
-#: HistContext.py:337
+#: HistContext.py:427
 msgid "To"
 msgstr ""
 
-#: HistContext.py:344
+#: HistContext.py:436
 msgid "Text"
 msgstr ""
