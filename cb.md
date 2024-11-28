@@ -1,26 +1,19 @@
 # My cookbook for gramplet production
-##1. Prerequsites
+## 1. Prerequsites
 Working on a linux mint version 21.3
 
 Installed repo version of:
 
-a. Visual Studio Code - for python coding
+1. Visual Studio Code - for python coding
+2. gvim -for text files 
+3. pylint - for checking my python code
+4. black - for refactoring my code to the coding guidelines
+5. xgettext - for creating .pot template file for internationalisation 
+6. msmerge for updating the language file, when the template changed
+7. remarkable - for creating Mark Down files
+8. git - for version tracking
 
-b. gvim -for text files 
-
-c. pylint - for checking my python code
-
-d. black - for refactoring my code to the coding guidelines
-
-e. xgettext - for creating .pot template file for internationalisation 
-
-f msmerge for updating the language file, when the template changed
-
-g. remarkable - for creating Mark Down files
-
-h. git - for version tracking
-
-##2. Startup
+## 2. Startup
 During my genealogical research, I missed seeing what was going on in the society when my ancestors lived.
 
 Other applications have a build in timeline, and I thought gramps needed this.
@@ -29,17 +22,12 @@ Other applications have a build in timeline, and I thought gramps needed this.
 
 I defined my needs as a
 
-a. gramplet on person and relationship view
-
-b. Should show important historical event with the year the happened
-
-c. should be easily modifiable, and have a link to the event on internet
-
-d. should have different timeline, since my ancestors cam from both Sweden and Denmark, and some relatives to them emigrated to the US.
-
-e. The events should be colorized so you clearly could see what happened during the persons lifetime 
-
-f. I use the censuses in Denmark often, but cannot remember the years, so I included these in my CSV file: `da_DK_data_v1_0.txt` these entries should be able to be hidden, by applying a filter.
+* gramplet on person and relationship view
+* Should show important historical event with the year the happened
+* should be easily modifiable, and have a link to the event on internet
+* should have different timeline, since my ancestors cam from both Sweden and Denmark, and some relatives to them emigrated to the US.
+* The events should be colorized so you clearly could see what happened during the persons lifetime 
+* I use the censuses in Denmark often, but cannot remember the years, so I included these in my CSV file: `da_DK_data_v1_0.txt` these entries should be able to be hidden, by applying a filter.
 
 **Preparation**
 
@@ -57,7 +45,8 @@ gramps
 addons
 addons-source
 
-** The work**
+**The work**
+
 Went to grampsdev/addons-source/HistContext directory (not really it was changed from another name) 
 Created my app/HistContext outside the grampsdev tree, and created my own git repo for the gramplet
 Created the .gramps/gramps52/plugins/Histcontext directory for testing (Not recommended if you update anything in the database)
@@ -78,27 +67,20 @@ So now for cooperation with gramps users an developers. I use the [gramps dscour
 
 I soon found out that people use the gramplet in other ways than I thought of, and several errors was detected, as well as some very bright ideas for enhancement. I will just summarize:
 
-1: use black to refactor your code, for ensuring that it works with rest of gramps.
-
-2: The ini file should be persistent and reside in the plugin directory - use register
-
-3: The CSV files should be able to have different date formats.
-
-4: Possibility to hide events outside a persons life span.
-
-5: don't hard code anything a user might want to change. In my case: colors of foreground and background, which text file(s) to use, only use years for events.
-
-6 Remember that other may want to read and understand your code, so better comment, and use meaningful variable names.
-
+1. use black to refactor your code, for ensuring that it works with rest of gramps.
+2. The ini file should be persistent and reside in the plugin directory - use register
+3. The CSV files should be able to have different date formats.
+4. Possibility to hide events outside a persons life span.
+5. don't hard code anything a user might want to change. In my case: colors of foreground and background, which text file(s) to use, only use years for events.
+6. Remember that other may want to read and understand your code, so better comment, and use meaningful variable names.
 7. Don't be afraid to ask for help
-
 8. Don't be shy of your coding style and lack of knowledge - people will not laugh of you. worst thing tha may happen, is you get some goog advice 
 
-  OK back to the project:
+OK back to the project:
   	
- Make a git branch of addons-source directory, and clone that branch to the copy you have en the garmpsdev director.
-  Copy your gramplet directory in to that and do a commit and push.
-Wait and see if someone explodes.
+1. Make a git branch of addons-source directory, and clone that branch to the copy you have en the garmpsdev director.
+2. Copy your gramplet directory in to that and do a commit and push.
+3. Wait and see if someone explodes.
 
 If you think you is done with the feed back, make a pull request
 
