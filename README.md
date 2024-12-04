@@ -53,4 +53,4 @@ The options can be accessed by the settings for the view:
 
 8 The background colour for lines outside the active person's life span
 
-9 Files you choose to include in the timeline, Any files ending in _data_v1_0.txt will be listed, but it needs to hold data in the above format, in order to work.
+9 Files you choose to include in the timeline, Any files ending in `_v1_0.txt` will be listed, but it needs to hold data in the above format, in order to work.
