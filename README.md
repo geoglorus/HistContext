@@ -45,7 +45,7 @@ The options can be accessed by the settings for the view:
 
 4. Whether you will use full dates or full years for comparison between the event and your active person's life span. This option also causes full dates to be displayed in the Gramplet.
 
-5 The foreground color for lines within the active person's life span. There is a lot of applications, which let you convert a chosen colour to a HTML text string. I use KcolorChooser
+5 The foreground color for lines within the active person's life span. Clicking a color swatch opens a standard (Gtk.ColorChooserDialog) color picker.
 
 6 The background colour for lines within the active person's life span
  
