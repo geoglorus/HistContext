@@ -27,7 +27,10 @@ The third is `deafult_data_v1_0.txt` which will be used as a fallback, if there 
 
 The fourth file is `custom_v1_0.txt`which can be used for adding your own data, which will be merged into the view.
 
-You can add and use any semi-colon delimited file, as long as it ends with '_v1_0.txt´
+You can add and use any semi-colon delimited file, as long as it ends with `_v1_0.txt` 
+However, the entire list in the text file must be in the correct CSV format and include 4 semi-colon separated data items for each line. Otherwise, a separate error will be reported for each incorrect line and that data will be omitted from the list. 
+
+The entire file is cached and you will be nagged about **each** bad line.  
 
 ## Options
 
@@ -37,20 +40,12 @@ The options can be accessed by the settings for the view:
 
 ![Options](./options.png  "Options")
 
-1 This string can be used to filter out text. If you set this to "Cen", then all lines where the text starts with "Cen" will be filtered out (i.e., "Census" as well as "Century", but not "1910 Census")
-
-2 If you check this box, your filter will be active
-
-3 This checkbox decides whether you will see all events or only those in your active person's life span
-
-4. Whether you will use full dates or full years for comparison between the event and your active person's life span. This option also causes full dates to be displayed in the Gramplet.
-
-5 The foreground color for lines within the active person's life span. Clicking a color swatch opens a standard (Gtk.ColorChooserDialog) color picker.
-
-6 The background colour for lines within the active person's life span
- 
-7  The foreground colour for lines outside the active person's life span
-
-8 The background colour for lines outside the active person's life span
-
-9 Files you choose to include in the timeline, Any files ending in `_v1_0.txt` will be listed, but it needs to hold data in the above format, in order to work.
+1. This string can be used to filter out text. If you set this to "Cen", then all lines where the text *starts* with "Cen" will be filtered out (i.e., "Census" as well as "Century", but not "1910 Census")
+2. If you select the "Use filter" checkbox, your filter in the #1 textbox will be active
+3. This checkbox determines whether the gramplet will show all events or only those in the active person's life span
+4. Whether you will use full dates or full years for comparison between the event and the active person's life span. This option also causes full dates to be displayed in the Gramplet.
+5. The foreground color for lines within the active person's life span. Clicking a color swatch opens a standard (Gtk.ColorChooserDialog) color picker.
+6. The background colour for lines within the active person's life span
+7. The foreground colour for lines outside the active person's life span
+8. The background colour for lines outside the active person's life span
+9. Any event file ending in `_v1_0.txt` will be listed with a checkbox. Selected event files will be included in the gramplet's timeline. 
