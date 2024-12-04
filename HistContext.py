@@ -324,7 +324,7 @@ class HistContext(Gramplet):
                 if len(words) != 5:
                     if len(line) > 10:
                         errormessage = (
-                            _(': not four semicolons in : "')
+                            _(': line does not contain four sections separated by semicolons in : "')
                             + line
                             + 'i" File: '
                             + flnm
