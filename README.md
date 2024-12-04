@@ -5,10 +5,8 @@ Gramplet to display significant historical events with the year they happened (a
 
 A double-click on a row will open a browser tab at the provided Link
 
-The gramplet considers the lifespan of the Activer Person in the People and the Relationship Category views splitbars.
-It will use the birth and death of the active person to narrow the list to pertinent events.
-
-If either of the dates are missing the gramplet assumes a probable life span set in the Preferences using Gramps' "Probably Alive" calculation.
+The gramplet considers the lifespan of the Active Person in the People and the Relationship Category views splitbars.
+It will use the birth and death of the active person to narrow the list to pertinent events. If either of the dates are missing the gramplet assumes a probable life span set in the Preferences using Gramps' "Probably Alive" calculation.
  
 The data for the gramplet comes from a simple CSV file using the semi-colon delimiter, which can be edited with a normal text editor.
 
@@ -46,7 +44,6 @@ The options can be accessed by the settings for the view:
 3 This checkbox decides whether you will see all events or only those in your active person's life span
 
 4. Whether you will use full dates or full years for comparison between the event and your active person's life span. This option also causes full dates to be displayed in the Gramplet.
-
 
 5 The foreground color for lines within the active person's life span. There is a lot of applications, which let you convert a chosen colour to a HTML text string. I use KcolorChooser
 
